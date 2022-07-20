@@ -49,6 +49,8 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			fmt.Println(err.Error())
 			return
 		}
+
+		// OSRS hiscore lookup... This is an awful implementation but eh... who cares
 	} else if cmdlet[0] == "!skill" {
 		h := hiscores.NewHiscores()
 
