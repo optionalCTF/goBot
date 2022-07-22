@@ -12,7 +12,6 @@ import (
 
 var BotId string
 var discBot *discordgo.Session
-var check = discordgo.Sticker{}
 
 func Start() {
 	discBot, err := discordgo.New("Bot " + config.Token)
@@ -22,9 +21,6 @@ func Start() {
 		return
 	}
 
-	if (discordgo.Sticker{}) == check {
-		return
-	}
 	discBot.AddHandler(messageHandler)
 	discBot.Identify.Intents = discordgo.IntentsGuildMessages
 	err = discBot.Open()
@@ -37,7 +33,9 @@ func Start() {
 }
 
 func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
-
+	if m.Content == "" {
+		return
+	}
 	if m.Author.ID == s.State.User.ID {
 		return
 	}
