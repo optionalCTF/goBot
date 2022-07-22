@@ -12,6 +12,7 @@ import (
 
 var BotId string
 var discBot *discordgo.Session
+var check = discordgo.Sticker{}
 
 func Start() {
 	discBot, err := discordgo.New("Bot " + config.Token)
@@ -21,9 +22,11 @@ func Start() {
 		return
 	}
 
+	if (discordgo.Sticker{}) == check {
+		return
+	}
 	discBot.AddHandler(messageHandler)
 	discBot.Identify.Intents = discordgo.IntentsGuildMessages
-
 	err = discBot.Open()
 
 	if err != nil {
@@ -34,8 +37,16 @@ func Start() {
 }
 
 func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
+
 	if m.Author.ID == s.State.User.ID {
 		return
+	}
+
+	if m.Author.ID == "208996860583477249" {
+		err := s.MessageReactionAdd(m.ChannelID, m.ID, "🍆")
+		if err != nil {
+			fmt.Println(err.Error())
+		}
 	}
 
 	// Fields is awful if you require arguments that may have spaces e.g usernames
