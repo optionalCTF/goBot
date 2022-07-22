@@ -29,7 +29,7 @@ func Start() {
 		fmt.Println(err.Error())
 		return
 	}
-	fmt.Println("Bot is running !")
+	fmt.Println("[+] Bot is running!")
 }
 
 func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
@@ -47,12 +47,18 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Content == "" {
 		return
 	}
+
 	// Fields is awful if you require arguments that may have spaces e.g usernames
 	// This will error if content is empty. Which it will be if user enters a sticker in a bot-readable channel.............
 	cmdlet := strings.Fields(m.Content)
+
 	if m.Content[0:1] != config.BotPrefix {
 		return
-	} else if cmdlet[0] == "!ping" {
+	}
+
+	fmt.Printf("[~] %s ran command %s\n", m.Author.String(), m.Content)
+
+	if cmdlet[0] == "!ping" {
 		_, err := s.ChannelMessageSend(m.ChannelID, "pong")
 
 		if err != nil {
